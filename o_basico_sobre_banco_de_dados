@@ -1,0 +1,45 @@
+CREATE TABLE clientes (
+    cliente_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cliente_nome TEXT
+);
+
+
+CREATE TABLE notas_fiscais (
+    nota_fiscal INTEGER PRIMARY KEY AUTOINCREMENT,
+    cliente_id INTEGER,
+    endereco_id INTEGER,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(cliente_id),
+    FOREIGN KEY (endereco_id) REFERENCES enderecos(endereco_id)
+);
+    
+CREATE TABLE enderecos (
+    endereco_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cliente_id INTEGER,
+    endereco INTEGER,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(cliente_id)
+);
+
+INSERT INTO clientes (cliente_nome) VALUES ("Joyce Byers");
+INSERT INTO clientes (cliente_nome) VALUES ("Harry Potter");
+
+INSERT INTO enderecos (cliente_id, endereco) VALUES (1, "149 Coastline Rd, Fayetteville, GA, USA");
+INSERT INTO enderecos (cliente_id, endereco) VALUES (1, "149 Coastline Rd, Fayetteville, GA, USA, mundo invertido");
+INSERT INTO enderecos (cliente_id, endereco) VALUES (2, "Hogwarts Castle, Highlands, Scotland, Great Britain");
+
+INSERT INTO notas_fiscais (nota_fiscal, cliente_id, endereco_id) VALUES (10383, 1, 1);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (1, 1);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (1, 2);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (1, 2);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (1, 2);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (2, 3);
+INSERT INTO notas_fiscais (cliente_id, endereco_id) VALUES (2, 3);
+
+SELECT cliente_id, cliente_nome FROM clientes;
+
+SELECT endereco_id, enderecos.cliente_id, clientes.cliente_nome, endereco FROM enderecos
+LEFT OUTER JOIN clientes ON clientes.cliente_id = enderecos.cliente_id
+;
+
+SELECT nota_fiscal, notas_fiscais.cliente_id, clientes.cliente_nome, notas_fiscais.endereco_id, enderecos.endereco FROM notas_fiscais
+LEFT OUTER JOIN clientes ON clientes.cliente_id = notas_fiscais.cliente_id
+LEFT OUTER JOIN enderecos ON enderecos.endereco_id = notas_fiscais.endereco_id;
